@@ -44,7 +44,7 @@ private:
 		}
 		putchar('\n');
 	}
-	void printFieldRow(int row) {
+	void printFieldRow(const int& row) {
 		if (row != SIZE) cout << ' ' << row;
 		else cout << row;
 		for (int j = 1; j < SIZE + 1; j++) {
@@ -52,22 +52,12 @@ private:
 		}
 	}
 
-	void printHiddenFieldRow(int row) {
+	void printHiddenFieldRow(const int& row) {
 		if (row != SIZE) cout << ' ' << row;
 		else cout << row;
 		for (int j = 1; j < SIZE + 1; j++) {
 			cout << ' ' << hidenField[row][j];
 		}
-	}
-public:
-	int getCount() {
-		return countShips;
-	}
-	void showField() {
-		return renderField(field);
-	}
-	void showHiddenField() {
-		return renderField(hidenField);
 	}
 	void createCoords(int& x, int& number)
 	{
@@ -179,35 +169,7 @@ public:
 				cout << "НАПРАВЛЕНИЕ ВВЕДЕНО НЕКОРРЕКТНО ИЛИ КОРАБЛЬ ВЫШЕЛ ЗА ГРАНИЦЫ. ПОПРОБУЙТЕ СНОВА\n\n";
 		} while (flag == false);
 	}
-	void start()
-	{
-		for (int i = 0; i < SIZE + 2; i++) {
-			for (int j = 0; j < SIZE + 2; j++) {
-				field[i][j] = '.';
-				hidenField[i][j] = '.';
-			}
-		}
-		showField();
-		createShip(4);
-		countShips++;
-		showField();
-		for (int i = 0; i < 2; i++) {
-			createShip(3);
-			countShips++;
-			showField();
-		}
-		for (int i = 0; i < 3; i++) {
-			createShip(2);
-			countShips++;
-			showField();
-		}
-		for (int i = 0; i < 4; i++) {
-			createShip(1);
-			countShips++;
-			showField();
-		}
-	}
-	 bool miss(int &row, int &col) {
+	bool miss(int& row, int& col) {
 		cout << "КОМПЬЮТЕР ВЫСТРЕЛИЛ МИМО!\n";
 		showField();
 		return false;
@@ -286,29 +248,6 @@ public:
 			}
 		} while (flag == false);
 	}
-	void computer_start() {
-		for (int i = 0; i < SIZE + 2; i++) {
-			for (int j = 0; j < SIZE + 2; j++) {
-				field[i][j] = '.';
-				hidenField[i][j] = '.';
-			}
-		}
-		computer_createShip(4);
-		countShips++;
-		for (int i = 0; i < 2; i++) {
-			computer_createShip(3);
-			countShips++;
-		}
-		for (int i = 0; i < 3; i++) {
-			computer_createShip(2);
-			countShips++;
-		}
-		for (int i = 0; i < 4; i++) {
-			computer_createShip(1);
-			countShips++;
-		}
-
-	}
 	void round(int& row, int& col) {
 		if (field[row - 1][col] == 'X') {
 			for (;field[row + 1][col] == 'X'; row++);
@@ -363,7 +302,7 @@ public:
 			}
 		}
 	}
-	bool is_correct(int &row, int &col, int &direct) {
+	bool is_correct(int& row, int& col, int& direct) {
 		if (field[row][col] == 'o')
 			return true;
 		if (direct == 1) {
@@ -394,6 +333,67 @@ public:
 			else
 				return false;
 		}
+	}
+public:
+	int getCount() {
+		return countShips;
+	}
+	void showField() {
+		return renderField(field);
+	}
+	void showHiddenField() {
+		return renderField(hidenField);
+	}
+	void start()
+	{
+		for (int i = 0; i < SIZE + 2; i++) {
+			for (int j = 0; j < SIZE + 2; j++) {
+				field[i][j] = '.';
+				hidenField[i][j] = '.';
+			}
+		}
+		showField();
+		createShip(4);
+		countShips++;
+		showField();
+		for (int i = 0; i < 2; i++) {
+			createShip(3);
+			countShips++;
+			showField();
+		}
+		for (int i = 0; i < 3; i++) {
+			createShip(2);
+			countShips++;
+			showField();
+		}
+		for (int i = 0; i < 4; i++) {
+			createShip(1);
+			countShips++;
+			showField();
+		}
+	}
+	void computer_start() {
+		for (int i = 0; i < SIZE + 2; i++) {
+			for (int j = 0; j < SIZE + 2; j++) {
+				field[i][j] = '.';
+				hidenField[i][j] = '.';
+			}
+		}
+		computer_createShip(4);
+		countShips++;
+		for (int i = 0; i < 2; i++) {
+			computer_createShip(3);
+			countShips++;
+		}
+		for (int i = 0; i < 3; i++) {
+			computer_createShip(2);
+			countShips++;
+		}
+		for (int i = 0; i < 4; i++) {
+			computer_createShip(1);
+			countShips++;
+		}
+
 	}
 	bool attack(player& enemy) {
 		cout << "ВАШЕ ПОЛЕ                  ПОЛЕ ПРОТИВНИКА\n";
