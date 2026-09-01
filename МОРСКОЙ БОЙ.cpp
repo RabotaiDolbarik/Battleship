@@ -15,9 +15,8 @@ void clearConsole() { // очистка консоли в зависимости
 	system("clear");
 #endif
 }
-struct player
+class player
 {
-private:
 	char field[SIZE + 2][SIZE + 2];
 	char hidenField[SIZE + 2][SIZE + 2];
 	int countShips;
@@ -762,59 +761,61 @@ int main()
 		switch (playersCount)
 		{
 		case 1:{
-				player computer{};
-				player person{};
-				computer.computer_start();
+				player* computer{new player};
+				player* person{new player};
+				computer->computer_start();
 				cout << "КОМПЬЮТЕР РАССТАВИЛ ВСЕ КОРАБЛИ!\n\n";
-				person.start();
+				person->start();
 				cout << "ВЫ УСПЕШНО РАССТАВИЛИ ВСЕ КОРАБЛИ! НАЖМИТЕ ENTER, ЧТОБЫ ПРОДОЛЖИТЬ\n";
 				cin.ignore(10000, '\n'); // пропустить "хвост" предыдущего ввода
 				cin.get();    // подождать нажатия Enter
 				clearConsole();
 				int turn{ 1 }; // чей ход
 				int row{ 0 }, col{ 0 }, direction{ 0 }, count{1};
-				while (computer.getCount() != 0 && person.getCount() != 0) {
+				while (computer->getCount() != 0 && person->getCount() != 0) {
 					if (turn % 2 != 0) {
 						cout << "КОМПЬЮТЕР ХОДИТ!\n\n";
-						if (!person.computer_attack(row, col, direction))
+						if (!person->computer_attack(row, col, direction))
 							turn++;
 					}
 					else {
 						cout << "ИГРОК, ВАШ ХОД!\n\n";
- 						if (!person.attack(computer))
+ 						if (!person->attack(*computer))
 							turn++;
 					}
 				}
-				if (computer.getCount() == 0)
+				if (computer->getCount() == 0)
 					cout << "ВЫ ПОБЕДИЛИ!\n";
 				else
 					cout << "ВЫ ПРОИГРАЛИ!\n";
 				cout << "ПОЛЕ КОМПЬЮТЕРА\n";
-				computer.showField();
+				computer->showField();
 				cout << "\n\nВАШЕ ПОЛЕ\n";
-				person.showField();
+				person->showField();
+				delete computer;
+				delete person;
 				break;
 			}
 		case 2: {
-			player number1{};
-			player number2{};
+			player* number1{new player};
+			player* number2{new player};
 			cout << "ИГРОК №1, РАСПОЛОЖИТЕ СВОИ КОРАБЛИ!\n\n";
-			number1.start();
+			number1->start();
 			cout << "ИГРОК №1 ЗАКОНЧИЛ РАССТАНОВКУ. НАЖМИТЕ ENTER И ПЕРЕДАЙТЕ УПРАВЛЕНИЕ ИГРОКУ №2\n";
 			cin.ignore(10000, '\n'); // пропустить "хвост" предыдущего ввода
 			cin.get();    // подождать нажатия Enter
 			clearConsole(); // очистка консоли 
 			cout << "ИГРОК №2, РАСПОЛОЖИТЕ СВОИ КОРАБЛИ!\n\n";
-			number2.start();
+			number2->start();
 			cout << "ИГРОК №2 ЗАКОНЧИЛ РАССТАНОВКУ. НАЖМИТЕ ENTER И ПЕРЕДАЙТЕ УПРАВЛЕНИЕ ИГРОКУ №1\n";
 			cin.ignore(10000, '\n'); // пропустить "хвост" предыдущего ввода
 			cin.get();    // подождать нажатия Enter
 			clearConsole();
 			int turn{ 1 }; // чей ход
-			while (number1.getCount() != 0 && number2.getCount() != 0) {
+			while (number1->getCount() != 0 && number2->getCount() != 0) {
 				if (turn % 2 != 0) {
 					cout << "ИГРОК №1, ВАШ ХОД!\n\n";
-					if (!number1.attack(number2)) {
+					if (!number1->attack(*number2)) {
 						turn++;
 						cout << "ИГРОК №1 ВЫСТРЕЛИЛ МИМО. НАЖМИТЕ ENTER И НЕ ПОДСМАТРИВАЯ ПЕРЕДАЙТЕ УПРАВЛЕНИЕ ИГРОКУ №2\n";
 						cin.ignore(10000, '\n'); // пропустить "хвост" предыдущего ввода
@@ -824,7 +825,7 @@ int main()
 				}
 				else {
 					cout << "ИГРОК №2, ВАШ ХОД!\n\n";
-					if (!number2.attack(number1)) {
+					if (!number2->attack(*number1)) {
 						turn++;
 						cout << "ИГРОК №2 ВЫСТРЕЛИЛ МИМО. НАЖМИТЕ ENTER И НЕ ПОДСМАТРИВАЯ ПЕРЕДАЙТЕ УПРАВЛЕНИЕ ИГРОКУ №1\n";
 						cin.ignore(10000, '\n'); // пропустить "хвост" предыдущего ввода
@@ -833,14 +834,16 @@ int main()
 					}
 				}
 			}
-			if (number1.getCount() == 0)
+			if (number1->getCount() == 0)
 				cout << "ИГРОК №2 ПОБЕДИЛ!\n";
 			else
 				cout << "ИГРОК №1 ПОБЕДИЛ!\n";
 			cout << "ПОЛЕ ИГРОКА №1\n";
-			number1.showField(); 
+			number1->showField();
 			cout << "\n\nПОЛЕ ИГРОКА №2\n";
-			number2.showField();
+			number2->showField();
+			delete number1;
+			delete number2;
 			break;
 		}
 		default:
