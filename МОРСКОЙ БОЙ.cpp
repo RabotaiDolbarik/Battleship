@@ -17,9 +17,9 @@ void clearConsole() { // очистка консоли в зависимости
 }
 class player
 {
-	char field[SIZE + 2][SIZE + 2];
-	char hidenField[SIZE + 2][SIZE + 2];
-	int countShips;
+	char field[SIZE + 2][SIZE + 2]{};
+	char hidenField[SIZE + 2][SIZE + 2]{};
+	int countShips{0};
 	void renderField(char(&f)[SIZE + 2][SIZE + 2]) {
 		cout << "   А Б В Г Д Е Ж З И К       ОБОЗНАЧЕНИЯ:\n";
 		for (int i = 1; i < SIZE + 1; i++) {
@@ -41,7 +41,7 @@ class player
 				cout << "       @ — клетка, где корабль не может находиться";
 			putchar('\n');
 		}
-		putchar('\n');
+		cout << "\n\n";
 	}
 	void printFieldRow(const int& row) {
 		if (row != SIZE) cout << ' ' << row;
@@ -167,11 +167,6 @@ class player
 			else
 				cout << "НАПРАВЛЕНИЕ ВВЕДЕНО НЕКОРРЕКТНО ИЛИ КОРАБЛЬ ВЫШЕЛ ЗА ГРАНИЦЫ. ПОПРОБУЙТЕ СНОВА\n\n";
 		} while (flag == false);
-	}
-	bool miss(int& row, int& col) {
-		cout << "КОМПЬЮТЕР ВЫСТРЕЛИЛ МИМО!\n";
-		showField();
-		return false;
 	}
 	void computer_createShip(int len)
 	{
@@ -332,6 +327,11 @@ class player
 			else
 				return false;
 		}
+	}
+	bool miss(int& row, int& col) {
+		cout << "КОМПЬЮТЕР ВЫСТРЕЛИЛ МИМО!\n";
+		showField();
+		return false;
 	}
 public:
 	int getCount() {
@@ -817,10 +817,12 @@ int main()
 					cout << "ИГРОК №1, ВАШ ХОД!\n\n";
 					if (!number1->attack(*number2)) {
 						turn++;
-						cout << "ИГРОК №1 ВЫСТРЕЛИЛ МИМО. НАЖМИТЕ ENTER И НЕ ПОДСМАТРИВАЯ ПЕРЕДАЙТЕ УПРАВЛЕНИЕ ИГРОКУ №2\n";
+						cout << "ИГРОК №1 ВЫСТРЕЛИЛ МИМО. НАЖМИТЕ ENTER И ПЕРЕДАЙТЕ УПРАВЛЕНИЕ ИГРОКУ №2\n";
 						cin.ignore(10000, '\n'); // пропустить "хвост" предыдущего ввода
 						cin.get();    // подождать нажатия Enter
 						clearConsole(); // очистка консоли 
+						cout << "ИГРОК №2, НАЖМИТЕ ENTER, ЧТОБЫ НАЧАТЬ СТРЕЛЬБУ!\n";
+						cin.get();    // подождать нажатия Enter
 					}
 				}
 				else {
@@ -831,6 +833,8 @@ int main()
 						cin.ignore(10000, '\n'); // пропустить "хвост" предыдущего ввода
 						cin.get();    // подождать нажатия Enter
 						clearConsole(); // очистка консоли 
+						cout << "ИГРОК №1, НАЖМИТЕ ENTER, ЧТОБЫ НАЧАТЬ СТРЕЛЬБУ!\n";
+						cin.get();    // подождать нажатия Enter
 					}
 				}
 			}
