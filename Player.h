@@ -1,3 +1,6 @@
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
+
 using std::cout;
 enum { SIZE = 10 };
 class Player
@@ -33,3 +36,4 @@ public:
 	bool attack(Player& enemy);
 	bool computer_attack(int& row, int& col, int& direct);
 };
+#endif
