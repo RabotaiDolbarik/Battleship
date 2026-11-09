@@ -6,6 +6,7 @@
 using std::cout;
 using std::cin;
 using std::string;
+
 void clearConsole() { // очистка консоли в зависимости от ОС
 #ifdef _WIN32
 	system("cls");
@@ -18,17 +19,24 @@ int main()
 	system("chcp 1251 > nul"); //для кодировки
 	setlocale(LC_ALL, "Russian");
 	srand(time(NULL));
-	int playersCount{}; //количество игроков
+	string playersCountString;
+	int playersCount = 1; //количество игроков
 	do {
 		cout << "ВВЕДИТЕ КОЛИЧЕСТВО ИГРОКОВ\n";
-		cin >> playersCount;
-		if (cin.fail()) { //проверяет если ввели не число
-			cin.clear(); //После ошибки cin находится в состоянии fail. 
-			//И пока это состояние не сбросить, последующие операции ввода нормально работать не будут.
-			cin.ignore(10000, '\n'); //пропустить максимум 10000 символов, пока не встретится '\n'
-			cout << "ОШИБКА: ВВЕДИТЕ ЧИСЛО 1 ИЛИ 2\n\n";
+		cin >> playersCountString;
+
+		try {
+			playersCount = std::stoi(playersCountString);
+		}
+		catch (const std::invalid_argument&) {
+			std::cerr << "Ошибка: не число в строке" << std::endl;
 			continue;
 		}
+		catch (const std::out_of_range&) {
+			std::cerr << "Ошибка: число вне диапазона" << std::endl;
+			continue;
+		}
+		
 		switch (playersCount)
 		{
 		case 1:{
@@ -122,8 +130,8 @@ int main()
 			break;
 		}
 		default:
-			cout << "ERROR: НЕ СУЩЕСТВУЕТ РЕЖИМА ИГРЫ НА ТАКОЕ КОЛИЧЕСТВО ЧЕЛОВЕК\n";
-			cout << "ПОПРОБУЙТЕ СНОВА\n\n";
+			std::cerr << "ERROR: НЕ СУЩЕСТВУЕТ РЕЖИМА ИГРЫ НА ТАКОЕ КОЛИЧЕСТВО ЧЕЛОВЕК\n";
+			std::cerr << "ПОПРОБУЙТЕ СНОВА\n\n";
 			break;
 		}
 	} while (playersCount != 1 && playersCount != 2);
